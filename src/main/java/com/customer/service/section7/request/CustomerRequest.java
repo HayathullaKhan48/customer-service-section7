@@ -18,5 +18,4 @@ public class CustomerRequest {
     private String customerMobileNumber;
     private String customerEmailAddress;
     private String customerAddress;
-    private String password;
 }

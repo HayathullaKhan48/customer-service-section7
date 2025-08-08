@@ -1,48 +1,51 @@
-package com.customer.service.section7.util;
+package com.customer.service.section6.util;
 
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.stream.Collectors;
+
+import static com.customer.service.section7.constant.Constant.PASS_CHARACTERS;
+import static com.customer.service.section7.constant.Constant.PASS_LENGTH;
 
 /**
- * CustomerUtil is a utility class that provides common helper methods
- * used across the application, such as password hashing.
+ * Utility class for customer-related helper methods such as hashing passwords.
+ * Uses SHA-256 hashing instead of BCrypt.
  */
 public class CustomerUtil {
 
-    /**
-     * Hashes the given plain-text password using the SHA-256 algorithm.
-     * This is useful for securely storing passwords in the database.
-     *
-     * @param password the raw password to hash
-     * @return the hashed password in hexadecimal string format
-     */
-    public static String hashPassword(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedHash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-            return bytesToHex(encodedHash);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error hashing password", e);
-        }
+    private static String generatePassword() {
+        SecureRandom random = new SecureRandom();
+        return random.ints(PASS_LENGTH, 0, PASS_CHARACTERS.length())
+                .mapToObj(PASS_CHARACTERS::charAt)
+                .map(Object::toString)
+                .collect(Collectors.joining());
+
     }
 
     /**
-     * Converts a byte array to a hexadecimal string.
-     * Used internally by the hashPassword method.
+     * Hashes the given password using SHA-256 algorithm.
      *
-     * @param bytes the byte array to convert
-     * @return a hexadecimal string representing the byte array
+     * @return hashed password in hexadecimal format
      */
-    private static String bytesToHex(byte[] bytes) {
-        StringBuilder hexString = new StringBuilder(2 * bytes.length);
-        for (byte b : bytes) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) {
-                hexString.append('0');
+    public static String autoGenerateHashPassword() {
+
+        String plainPassword = generatePassword();
+
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedHash = digest.digest(plainPassword.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : encodedHash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
             }
-            hexString.append(hex);
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error: SHA-256 algorithm not found.", e);
         }
-        return hexString.toString();
     }
 }

@@ -4,7 +4,6 @@ import com.customer.service.section7.entity.CustomerModel;
 import com.customer.service.section7.enums.CustomerStatus;
 import com.customer.service.section7.request.CustomerRequest;
 import com.customer.service.section7.response.CustomerResponse;
-import com.customer.service.section7.util.CustomerUtil;
 
 import java.time.LocalDateTime;
 
@@ -30,7 +29,6 @@ public class CustomerMapper {
                 .customerMobileNumber(request.getCustomerMobileNumber())
                 .customerEmailAddress(request.getCustomerEmailAddress())
                 .customerAddress(request.getCustomerAddress())
-                .password(CustomerUtil.hashPassword(request.getPassword()))
                 .userStatus(CustomerStatus.ACTIVE)
                 .createdDate(LocalDateTime.now())
                 .updatedDate(LocalDateTime.now())
