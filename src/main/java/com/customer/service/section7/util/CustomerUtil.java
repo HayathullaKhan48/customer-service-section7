@@ -1,4 +1,4 @@
-package com.customer.service.section6.util;
+package com.customer.service.section7.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

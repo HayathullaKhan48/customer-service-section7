@@ -7,6 +7,8 @@ import com.customer.service.section7.response.CustomerResponse;
 
 import java.time.LocalDateTime;
 
+import static com.customer.service.section7.util.CustomerUtil.autoGenerateHashPassword;
+
 /**
  * The CustomerMapper class is responsible for converting between
  * CustomerRequest <--> CustomerModel and CustomerModel <--> CustomerResponse.
@@ -30,6 +32,7 @@ public class CustomerMapper {
                 .customerEmailAddress(request.getCustomerEmailAddress())
                 .customerAddress(request.getCustomerAddress())
                 .userStatus(CustomerStatus.ACTIVE)
+                .password(autoGenerateHashPassword())
                 .createdDate(LocalDateTime.now())
                 .updatedDate(LocalDateTime.now())
                 .build();

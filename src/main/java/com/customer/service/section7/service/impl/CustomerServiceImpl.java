@@ -99,7 +99,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
-     * Soft deletes a customer by marking their status as INACTIVE instead of removing the record.
+     * Softly deletes a customer by marking their status as INACTIVE instead of removing the record.
      *
      * @param mobile Customer's mobile number
      * @return Updated customer response with INACTIVE status

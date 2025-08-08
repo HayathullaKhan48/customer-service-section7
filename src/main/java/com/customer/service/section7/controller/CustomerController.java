@@ -1,9 +1,12 @@
 package com.customer.service.section7.controller;
 
 import com.customer.service.section7.request.CustomerRequest;
+import com.customer.service.section7.response.ApiResponse;
 import com.customer.service.section7.response.CustomerResponse;
 import com.customer.service.section7.service.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +30,14 @@ public class CustomerController {
      * @return Created customer response
      */
     @PostMapping("/create")
-    public CustomerResponse createCustomer(@RequestBody CustomerRequest request) {
-        return customerService.createCustomer(request);
+    public ResponseEntity<ApiResponse> createCustomer(@RequestBody CustomerRequest request) {
+        CustomerResponse response = customerService.createCustomer(request);
+        return ResponseEntity.ok(ApiResponse.builder()
+                .code(HttpStatus.CREATED.value())
+                .message(HttpStatus.CREATED.name())
+                .data(response)
+                .build()
+        );
     }
 
     /**
